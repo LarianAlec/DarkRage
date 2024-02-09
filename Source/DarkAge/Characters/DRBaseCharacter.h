@@ -26,6 +26,10 @@ public:
 
 	void Crouch();
 
+	void Sprint();
+
+	void ForceStopSprint();
+
 	void StartFire();
 
 	void StopFire();

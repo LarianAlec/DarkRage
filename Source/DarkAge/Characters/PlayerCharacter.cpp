@@ -5,24 +5,33 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "DarkRageTypes.h"
 
 APlayerCharacter::APlayerCharacter()
 {
-	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
+	FPRoot = CreateDefaultSubobject<USceneComponent>(TEXT("FP Root"));
+	FPRoot->SetupAttachment(RootComponent);
 
-	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring arm"));
-	SpringArmComponent->SetupAttachment(RootComponent);
-	SpringArmComponent->bEnableCameraLag = true;
-	SpringArmComponent->bUsePawnControlRotation = true;
+	MeshRoot = CreateDefaultSubobject<USpringArmComponent>(TEXT("Mesh Root"));
+	MeshRoot->AttachToComponent(FPRoot, FAttachmentTransformRules::KeepRelativeTransform);
+	MeshRoot->AddLocalOffset(FVector(0.0f, 0.0f, 60.0f));
+	MeshRoot->bUsePawnControlRotation = true;
+	MeshRoot->bInheritRoll = false;
+	MeshRoot->bDoCollisionTest = false;
+	MeshRoot->TargetArmLength = 0.0f;
 
-	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	CameraComponent->AttachToComponent(SpringArmComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	CameraComponent->bUsePawnControlRotation = false;
+	OffsetRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Offset Root"));
+	OffsetRoot->AttachToComponent(MeshRoot, FAttachmentTransformRules::KeepRelativeTransform);
+	OffsetRoot->AddLocalOffset(FVector(0.0f, 0.0f, -60.0f));
 
-	GetCharacterMovement()->bOrientRotationToMovement = 1;
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+	FPMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh 1P"));
+	FPMesh->AttachToComponent(OffsetRoot, FAttachmentTransformRules::KeepRelativeTransform);
+	FPMesh->AddLocalOffset(FVector(0.0f, 0.0f, -96.0f));
+	FPMesh->AddLocalRotation(FRotator(0.0f, -90.0f, 0.0f));
+
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("First Person Camera"));
+	CameraComponent->AttachToComponent(FPMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketCamera);
+	CameraComponent->AddLocalRotation(FRotator(0.0f, 90.0f, 0.0f));
 }
 
 void APlayerCharacter::MoveForward(float Value)

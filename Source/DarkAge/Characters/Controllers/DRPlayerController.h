@@ -33,6 +33,10 @@ private:
 
 	void Crouch(const FInputActionValue& Value);
 
+	void Sprint(const FInputActionValue& Value);
+
+	void ForceStopSprint(const FInputActionValue& Value);
+
 	void PlayerStartFire(const FInputActionValue& Value);
 
 	void PlayerStopFire(const FInputActionValue& Value);

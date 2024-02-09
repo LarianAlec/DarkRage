@@ -20,6 +20,16 @@ void ADRBaseCharacter::Crouch()
 	UE_LOG(LogTemp, Warning, TEXT("ADRBaseCharacter::Crouch()"))
 }
 
+void ADRBaseCharacter::Sprint()
+{
+	UE_LOG(LogTemp, Warning, TEXT("ADRBaseCharacter::Sprint()"));
+}
+
+void ADRBaseCharacter::ForceStopSprint()
+{
+	UE_LOG(LogTemp, Warning, TEXT("ADRBaseCharacter::ForceStopSprint()"));
+}
+
 void ADRBaseCharacter::StartFire()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ADRBaseCharacter::StartFire()"))

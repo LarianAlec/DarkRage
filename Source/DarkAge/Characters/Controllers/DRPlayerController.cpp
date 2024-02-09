@@ -35,6 +35,8 @@ void ADRPlayerController::SetupInputComponent()
 			EnhancedInputComponent->BindAction(InputActions->LookAction, ETriggerEvent::Triggered, this, &ADRPlayerController::Look);
 			EnhancedInputComponent->BindAction(InputActions->JumpAction, ETriggerEvent::Started, this, &ADRPlayerController::Jump);
 			EnhancedInputComponent->BindAction(InputActions->CrouchAction, ETriggerEvent::Started, this, &ADRPlayerController::Crouch);
+			EnhancedInputComponent->BindAction(InputActions->SprintAction, ETriggerEvent::Triggered, this, &ADRPlayerController::Sprint);
+			EnhancedInputComponent->BindAction(InputActions->SprintAction, ETriggerEvent::Completed, this, &ADRPlayerController::ForceStopSprint);
 			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Started, this, &ADRPlayerController::PlayerStartFire);
 			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Completed, this, &ADRPlayerController::PlayerStopFire);
 			EnhancedInputComponent->BindAction(InputActions->ReloadAction, ETriggerEvent::Started, this, &ADRPlayerController::Reload);
@@ -77,6 +79,23 @@ void ADRPlayerController::Crouch(const FInputActionValue& Value)
 	if (CachedBaseCharacter.IsValid())
 	{
 		CachedBaseCharacter->Crouch();
+	}
+}
+
+void ADRPlayerController::Sprint(const FInputActionValue& Value)
+{
+	if (CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->Sprint();
+	}
+}
+
+
+void ADRPlayerController::ForceStopSprint(const FInputActionValue& Value)
+{
+	if (CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->ForceStopSprint();
 	}
 }
 

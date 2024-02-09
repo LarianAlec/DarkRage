@@ -39,6 +39,4 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UInputAction* MenuAction;
-
-
 };

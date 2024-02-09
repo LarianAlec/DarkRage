@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "DRBaseCharacter.generated.h"
 
+
+class UCharacterAttributesComponent;
 UCLASS(Abstract, NotBlueprintable)
 class DARKAGE_API ADRBaseCharacter : public ACharacter
 {
@@ -24,12 +26,6 @@ public:
 
 	virtual void LookUp(float Value) {};
 
-	void Crouch();
-
-	void Sprint();
-
-	void ForceStopSprint();
-
 	void StartFire();
 
 	void StopFire();
@@ -39,6 +35,15 @@ public:
 	void Punch();
 
 	void Menu();
+
+	const UCharacterAttributesComponent* GetCharacterAttributesComponent() const;
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Components")
+	UCharacterAttributesComponent* CharacterAttributesComponent;
+
+	virtual void OnDeath();
+
 
 private:
 

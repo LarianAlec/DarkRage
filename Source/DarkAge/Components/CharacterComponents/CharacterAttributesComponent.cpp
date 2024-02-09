@@ -5,12 +5,6 @@
 #include "Characters/DRBaseCharacter.h"
 
 
-UCharacterAttributesComponent::UCharacterAttributesComponent()
-{
-
-}
-
-
 float UCharacterAttributesComponent::GetHealthPercent() const
 {
 	return Health / MaxHealth;

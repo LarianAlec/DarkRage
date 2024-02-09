@@ -14,8 +14,6 @@ class DARKAGE_API UCharacterAttributesComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	UCharacterAttributesComponent();
-
 	FOnDeathEventSignature OnDeathEvent;
 
 	bool IsAlive() { return Health > 0; };

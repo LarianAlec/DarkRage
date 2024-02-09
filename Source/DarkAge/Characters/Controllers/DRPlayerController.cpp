@@ -31,45 +31,17 @@ void ADRPlayerController::SetupInputComponent()
 
 			UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
-			EnhancedInputComponent->BindAction(InputActions->MoveAction, ETriggerEvent::Triggered, this, &ADRPlayerController::Move);
-			EnhancedInputComponent->BindAction(InputActions->LookAction, ETriggerEvent::Triggered, this, &ADRPlayerController::Look);
-			EnhancedInputComponent->BindAction(InputActions->JumpAction, ETriggerEvent::Started, this, &ADRPlayerController::Jump);
 			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Started, this, &ADRPlayerController::PlayerStartFire);
 			EnhancedInputComponent->BindAction(InputActions->FireAction, ETriggerEvent::Completed, this, &ADRPlayerController::PlayerStopFire);
+			EnhancedInputComponent->BindAction(InputActions->AimAction, ETriggerEvent::Started, this, &ADRPlayerController::StartAiming);
+			EnhancedInputComponent->BindAction(InputActions->AimAction, ETriggerEvent::Completed, this, &ADRPlayerController::StopAiming);
 			EnhancedInputComponent->BindAction(InputActions->ReloadAction, ETriggerEvent::Started, this, &ADRPlayerController::Reload);
-			EnhancedInputComponent->BindAction(InputActions->PunchAction, ETriggerEvent::Started, this, &ADRPlayerController::Punch);
-			EnhancedInputComponent->BindAction(InputActions->MenuAction, ETriggerEvent::Started, this, &ADRPlayerController::Menu);
+			EnhancedInputComponent->BindAction(InputActions->EquipNextItemAction, ETriggerEvent::Triggered, this, &ADRPlayerController::EquipNextItem);
+			EnhancedInputComponent->BindAction(InputActions->EquipPreviousItemAction, ETriggerEvent::Triggered, this, &ADRPlayerController::EquipPreviousItem);
 		}
 	}
 }
 
-void ADRPlayerController::Move(const FInputActionValue& Value)
-{
-	if (CachedBaseCharacter.IsValid())
-	{
-		const FVector2D MovementVector = Value.Get<FVector2D>();
-		CachedBaseCharacter->MoveForward(MovementVector.Y);
-		CachedBaseCharacter->MoveRight(MovementVector.X);
-	}
-}
-
-void ADRPlayerController::Look(const FInputActionValue& Value)
-{
-	if (CachedBaseCharacter.IsValid())
-	{
-		const FVector2D LookVector = Value.Get<FVector2D>();
-		CachedBaseCharacter->LookUp(LookVector.Y);
-		CachedBaseCharacter->Turn(LookVector.X);
-	}
-}
-
-void ADRPlayerController::Jump(const FInputActionValue& Value)
-{
-	if (CachedBaseCharacter.IsValid())
-	{
-		CachedBaseCharacter->Jump();
-	}
-}
 
 void ADRPlayerController::PlayerStartFire(const FInputActionValue& Value)
 {
@@ -87,6 +59,22 @@ void ADRPlayerController::PlayerStopFire(const FInputActionValue& Value)
 	}
 }
 
+void ADRPlayerController::StartAiming(const FInputActionValue& Value)
+{
+	if (CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->StartAiming();
+	}
+}
+
+void ADRPlayerController::StopAiming(const FInputActionValue& Value)
+{
+	if (CachedBaseCharacter.IsValid())
+	{
+		CachedBaseCharacter->StopAiming();
+	}
+}
+
 void ADRPlayerController::Reload(const FInputActionValue& Value)
 {
 	if (CachedBaseCharacter.IsValid())
@@ -95,18 +83,23 @@ void ADRPlayerController::Reload(const FInputActionValue& Value)
 	}
 }
 
-void ADRPlayerController::Punch(const FInputActionValue& Value)
+void ADRPlayerController::EquipNextItem(const FInputActionValue& Value)
 {
 	if (CachedBaseCharacter.IsValid())
 	{
-		CachedBaseCharacter->Punch();
+		CachedBaseCharacter->NextItem();
 	}
 }
 
-void ADRPlayerController::Menu(const FInputActionValue& Value)
+void ADRPlayerController::EquipPreviousItem(const FInputActionValue& Value)
 {
 	if (CachedBaseCharacter.IsValid())
 	{
-		CachedBaseCharacter->Menu();
+		CachedBaseCharacter->PreviousItem();
 	}
+}
+
+void ADRPlayerController::CreateAndInitializeWidgets()
+{
+
 }

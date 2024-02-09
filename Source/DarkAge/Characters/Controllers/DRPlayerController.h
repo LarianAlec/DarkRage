@@ -7,6 +7,7 @@
 #include "DRPlayerController.generated.h"
 
 struct FInputActionValue;
+//class UPlayerHUDWidget;
 UCLASS()
 class DARKAGE_API ADRPlayerController : public APlayerController
 {
@@ -22,6 +23,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
 	class UDRCharacterInputConfig* InputActions;
 
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, category = "Widgets")
+	//TSubclassOf<UPlayerHUDWidget> PlayerHudWidgetClass;
+
 	virtual void SetupInputComponent() override;
 
 private:
@@ -31,21 +35,23 @@ private:
 
 	void Jump(const FInputActionValue& Value);
 
-	void Crouch(const FInputActionValue& Value);
-
-	void Sprint(const FInputActionValue& Value);
-
-	void ForceStopSprint(const FInputActionValue& Value);
-
 	void PlayerStartFire(const FInputActionValue& Value);
 
 	void PlayerStopFire(const FInputActionValue& Value);
 
+	void StartAiming(const FInputActionValue& Value);
+
+	void StopAiming(const FInputActionValue& Value);
+
 	void Reload(const FInputActionValue& Value);
 
-	void Punch(const FInputActionValue& Value);
+	void EquipNextItem(const FInputActionValue& Value);
 
-	void Menu(const FInputActionValue& Value);
+	void EquipPreviousItem(const FInputActionValue& Value);
 
 	TSoftObjectPtr<class ADRBaseCharacter> CachedBaseCharacter;
+
+	void CreateAndInitializeWidgets();
+
+	//UPlayerHudWidget* PlayerHudWidget = nullptr;
 };

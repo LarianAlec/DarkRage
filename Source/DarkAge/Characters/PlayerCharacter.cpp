@@ -33,7 +33,7 @@ APlayerCharacter::APlayerCharacter()
 	CameraComponent->AttachToComponent(FPMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketCamera);
 	CameraComponent->AddLocalRotation(FRotator(0.0f, 90.0f, 0.0f));
 }
-
+/*
 void APlayerCharacter::MoveForward(float Value)
 {
 	if (!FMath::IsNearlyZero(Value, 1e-6f))
@@ -63,3 +63,4 @@ void APlayerCharacter::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
 }
+*/

@@ -81,10 +81,11 @@ protected:
 
 	virtual void OnStopAimingInternal();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Attributes")
+	bool bIsAiming = false;
+
 private:
 	FVector CurrentFallApex;
-
-	bool bIsAiming = false;
 
 	float CurrentAimingMovementSpeed = 0.0f;
 

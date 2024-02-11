@@ -7,13 +7,16 @@
 #include "InputMappingContext.h"
 #include "Input/DRCharacterInputConfig.h"
 #include "EnhancedInputComponent.h"
+#include "UI/ReticleWidget.h"
+#include "Components/CharacterComponents/CharacterEquipmentComponent.h"
+#include "UI/AmmoWidget.h"
 
 
 void ADRPlayerController::SetPawn(APawn* InPawn)
 {
 	Super::SetPawn(InPawn);
 	CachedBaseCharacter = Cast<ADRBaseCharacter>(InPawn);
-
+	CreateAndInitializeWidgets();
 }
 
 void ADRPlayerController::SetupInputComponent()
@@ -101,5 +104,28 @@ void ADRPlayerController::EquipPreviousItem(const FInputActionValue& Value)
 
 void ADRPlayerController::CreateAndInitializeWidgets()
 {
+	if (!IsValid(PlayerHUDWidget))
+	{
+		PlayerHUDWidget = CreateWidget<UPlayerHUDWidget>(GetWorld(), PlayerHUDWidgetClass);
+		if (IsValid(PlayerHUDWidget))
+		{
+			PlayerHUDWidget->AddToViewport();
+		}
+	}
 
+	if (IsValid(PlayerHUDWidget) && CachedBaseCharacter.IsValid())
+	{
+		UReticleWidget* ReticleWidget = PlayerHUDWidget->GetReticleWidget();
+		if (IsValid(ReticleWidget))
+		{
+			CachedBaseCharacter->OnAimingStateChanged.AddUFunction(ReticleWidget, FName("OnAimingStateChanged"));
+		}
+
+		UAmmoWidget* AmmoWidget = PlayerHUDWidget->GetAmmoWidget();
+		if (IsValid(AmmoWidget))
+		{
+			UCharacterEquipmentComponent* CharacterEquipment = CachedBaseCharacter->GetCharacterEquipmentComponent_Mutable();
+			CharacterEquipment->OnCurrentWeaponAmmoChangedEvent.AddUFunction(AmmoWidget, FName("UpdateAmmoCount"));
+		}
+	}
 }

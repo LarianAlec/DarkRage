@@ -6,12 +6,13 @@
 #include "Blueprint/UserWidget.h"
 #include "ReticleWidget.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class DARKAGE_API UReticleWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
+protected:
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnAimingStateChanged(bool bIsAiming);
 };

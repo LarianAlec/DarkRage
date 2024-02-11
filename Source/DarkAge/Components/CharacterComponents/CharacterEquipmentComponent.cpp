@@ -5,7 +5,7 @@
 #include "Actors/Equipment/Weapons/RangeWeaponItem.h"
 #include "Characters/DRBaseCharacter.h"
 #include "DarkRageTypes.h"
-
+#include "Characters/PlayerCharacter.h"
 
 
 EEquipableItemType UCharacterEquipmentComponent::GetCurrentEquippedItemType() const
@@ -78,14 +78,16 @@ void UCharacterEquipmentComponent::EquipItemInSlot(EEquipmentSlots Slot)
 
 void UCharacterEquipmentComponent::AttachCurrentItemToEquippedSocket()
 {
-	CurrentEquippedItem->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, CurrentEquippedItem->GetEquippedSocketName());
+
+		CurrentEquippedItem->AttachToComponent(/*CachedBaseCharacter->GetMesh()*/ FPMesh, FAttachmentTransformRules::KeepRelativeTransform, CurrentEquippedItem->GetEquippedSocketName());
+
 }
 
 void UCharacterEquipmentComponent::UnEquipCurrentItem()
 {
 	if (IsValid(CurrentEquippedItem))
 	{
-		CurrentEquippedItem->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, CurrentEquippedItem->GetUnEquippedSocketName());
+			CurrentEquippedItem->AttachToComponent(/*CachedBaseCharacter->GetMesh()*/ FPMesh, FAttachmentTransformRules::KeepRelativeTransform, CurrentEquippedItem->GetUnEquippedSocketName());
 	}
 	if (IsValid(CurrentEquippedWeapon))
 	{
@@ -130,6 +132,7 @@ void UCharacterEquipmentComponent::BeginPlay()
 	Super::BeginPlay();
 	checkf(GetOwner()->IsA<ADRBaseCharacter>(), TEXT(" UCharacterEquipmentComponent::BeginPlay() can be used only with AGCBaseCharacter"));
 	CachedBaseCharacter = StaticCast<ADRBaseCharacter*>(GetOwner());
+	FPMesh = Cast<APlayerCharacter>(CachedBaseCharacter)->GetFirstPersonMesh();
 	CreateLoadout();
 }
 
@@ -149,7 +152,7 @@ void UCharacterEquipmentComponent::CreateLoadout()
 			continue;
 		}
 		AEquipableItem* Item = GetWorld()->SpawnActor<AEquipableItem>(ItemPair.Value);
-		Item->AttachToComponent(CachedBaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, Item->GetUnEquippedSocketName());
+		Item->AttachToComponent(/*CachedBaseCharacter->GetMesh()*/ FPMesh, FAttachmentTransformRules::KeepRelativeTransform, Item->GetUnEquippedSocketName());
 		Item->SetOwner(CachedBaseCharacter.Get());
 		ItemsArray[(uint32)ItemPair.Key] = Item;
 	}

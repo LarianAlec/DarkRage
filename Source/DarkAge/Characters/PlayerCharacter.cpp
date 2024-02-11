@@ -24,7 +24,7 @@ APlayerCharacter::APlayerCharacter()
 	OffsetRoot->AttachToComponent(MeshRoot, FAttachmentTransformRules::KeepRelativeTransform);
 	OffsetRoot->AddLocalOffset(FVector(0.0f, 0.0f, -60.0f));
 
-	FPMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh 1P"));
+	FPMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("First Person Mesh"));
 	FPMesh->AttachToComponent(OffsetRoot, FAttachmentTransformRules::KeepRelativeTransform);
 	FPMesh->AddLocalOffset(FVector(0.0f, 0.0f, -96.0f));
 	FPMesh->AddLocalRotation(FRotator(0.0f, -90.0f, 0.0f));
@@ -33,34 +33,44 @@ APlayerCharacter::APlayerCharacter()
 	CameraComponent->AttachToComponent(FPMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketCamera);
 	CameraComponent->AddLocalRotation(FRotator(0.0f, 90.0f, 0.0f));
 }
-/*
-void APlayerCharacter::MoveForward(float Value)
+
+USkeletalMeshComponent* APlayerCharacter::GetFirstPersonMesh() const
 {
-	if (!FMath::IsNearlyZero(Value, 1e-6f))
+	return FPMesh;
+}
+
+float APlayerCharacter::PlayFPAnimMontage(class UAnimMontage* AnimMontage, float InPlayRate, FName StartSectionName)
+{
+	UAnimInstance* AnimInstance = (IsValid(FPMesh)) ? FPMesh->GetAnimInstance() : nullptr;
+	if (AnimMontage && AnimInstance)
 	{
-		FRotator YawRotator(0.0f, GetControlRotation().Yaw, 0.0f);
-		FVector ForwardVector = YawRotator.RotateVector(FVector::ForwardVector);
-		AddMovementInput(ForwardVector, Value);
+		float const Duration = AnimInstance->Montage_Play(AnimMontage, InPlayRate);
+
+		if (Duration > 0.f)
+		{
+			// Start at a given Section.
+			if (StartSectionName != NAME_None)
+			{
+				AnimInstance->Montage_JumpToSection(StartSectionName, AnimMontage);
+			}
+
+			return Duration;
+		}
+	}
+
+	return 0.f;
+}
+
+void APlayerCharacter::StopFPAnimMontage(class UAnimMontage* AnimMontage)
+{
+	{
+		UAnimInstance* AnimInstance = (IsValid(FPMesh)) ? FPMesh->GetAnimInstance() : nullptr;
+		UAnimMontage* MontageToStop = (AnimMontage) ? AnimMontage : GetCurrentMontage();
+		bool bShouldStopMontage = AnimInstance && MontageToStop && !AnimInstance->Montage_GetIsStopped(MontageToStop);
+
+		if (bShouldStopMontage)
+		{
+			AnimInstance->Montage_Stop(MontageToStop->BlendOut.GetBlendTime(), MontageToStop);
+		}
 	}
 }
-
-void APlayerCharacter::MoveRight(float Value)
-{
-	if (!FMath::IsNearlyZero(Value, 1e-6f))
-	{
-		FRotator YawRotator(0.0f, GetControlRotation().Yaw, 0.0f);
-		FVector RightVector = YawRotator.RotateVector(FVector::RightVector);
-		AddMovementInput(RightVector, Value);
-	}
-}
-
-void APlayerCharacter::Turn(float Value)
-{
-	AddControllerYawInput(Value);
-}
-
-void APlayerCharacter::LookUp(float Value)
-{
-	AddControllerPitchInput(Value);
-}
-*/

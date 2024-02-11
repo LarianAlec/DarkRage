@@ -15,11 +15,12 @@ class DARKAGE_API APlayerCharacter : public ADRBaseCharacter
 public:
 	APlayerCharacter();
 
-/*	virtual void MoveForward(float Value) override;
-	virtual void MoveRight(float Value) override;
-	virtual void Turn(float Value) override;
-	virtual void LookUp(float Value) override;*/
+	USkeletalMeshComponent* GetFirstPersonMesh() const;
 
+	float PlayFPAnimMontage(class UAnimMontage* AnimMontage, float InPlayRate = 1.0f, FName StartSectionName = NAME_None);
+
+	void StopFPAnimMontage(class UAnimMontage* AnimMontage);
+	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character")
 	USceneComponent* FPRoot;

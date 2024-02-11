@@ -82,6 +82,8 @@ private:
 
 	ARangeWeaponItem* CurrentEquippedWeapon;
 
+	class USkeletalMeshComponent* FPMesh;
+
 	TWeakObjectPtr<class ADRBaseCharacter> CachedBaseCharacter;
 
 	FTimerHandle EquipTimer;

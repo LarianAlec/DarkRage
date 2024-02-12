@@ -26,7 +26,6 @@ APlayerCharacter::APlayerCharacter()
 	OffsetRoot->AttachToComponent(MeshRoot, FAttachmentTransformRules::KeepRelativeTransform);
 	OffsetRoot->AddLocalOffset(FVector(0.0f, 0.0f, -60.0f));
 
-	FPMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("First Person Mesh"));
 	FPMesh->AttachToComponent(OffsetRoot, FAttachmentTransformRules::KeepRelativeTransform);
 	FPMesh->AddLocalOffset(FVector(0.0f, 0.0f, -96.0f));
 	FPMesh->AddLocalRotation(FRotator(0.0f, -90.0f, 0.0f));
@@ -34,47 +33,6 @@ APlayerCharacter::APlayerCharacter()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("First Person Camera"));
 	CameraComponent->AttachToComponent(FPMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketCamera);
 	CameraComponent->AddLocalRotation(FRotator(0.0f, 90.0f, 0.0f));
-}
-
-USkeletalMeshComponent* APlayerCharacter::GetFirstPersonMesh() const
-{
-	return FPMesh;
-}
-
-float APlayerCharacter::PlayFPAnimMontage(class UAnimMontage* AnimMontage, float InPlayRate, FName StartSectionName)
-{
-	UAnimInstance* AnimInstance = (IsValid(FPMesh)) ? FPMesh->GetAnimInstance() : nullptr;
-	if (AnimMontage && AnimInstance)
-	{
-		float const Duration = AnimInstance->Montage_Play(AnimMontage, InPlayRate);
-
-		if (Duration > 0.f)
-		{
-			// Start at a given Section.
-			if (StartSectionName != NAME_None)
-			{
-				AnimInstance->Montage_JumpToSection(StartSectionName, AnimMontage);
-			}
-
-			return Duration;
-		}
-	}
-
-	return 0.f;
-}
-
-void APlayerCharacter::StopFPAnimMontage(class UAnimMontage* AnimMontage)
-{
-	{
-		UAnimInstance* AnimInstance = (IsValid(FPMesh)) ? FPMesh->GetAnimInstance() : nullptr;
-		UAnimMontage* MontageToStop = (AnimMontage) ? AnimMontage : GetCurrentMontage();
-		bool bShouldStopMontage = AnimInstance && MontageToStop && !AnimInstance->Montage_GetIsStopped(MontageToStop);
-
-		if (bShouldStopMontage)
-		{
-			AnimInstance->Montage_Stop(MontageToStop->BlendOut.GetBlendTime(), MontageToStop);
-		}
-	}
 }
 
 void APlayerCharacter::OnStartAimingInternal()

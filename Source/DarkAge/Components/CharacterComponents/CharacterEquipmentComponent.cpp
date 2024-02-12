@@ -5,7 +5,6 @@
 #include "Actors/Equipment/Weapons/RangeWeaponItem.h"
 #include "Characters/DRBaseCharacter.h"
 #include "DarkRageTypes.h"
-#include "Characters/PlayerCharacter.h"
 
 
 EEquipableItemType UCharacterEquipmentComponent::GetCurrentEquippedItemType() const
@@ -57,7 +56,7 @@ void UCharacterEquipmentComponent::EquipItemInSlot(EEquipmentSlots Slot)
 		if (IsValid(EquipMontage))
 		{
 			bIsEquipping = true;
-			float EquipDuration = Cast<APlayerCharacter>(CachedBaseCharacter)->PlayFPAnimMontage(EquipMontage);
+			float EquipDuration = CachedBaseCharacter->PlayFPAnimMontage(EquipMontage);
 			GetWorld()->GetTimerManager().SetTimer(EquipTimer, this, &UCharacterEquipmentComponent::EquipAnimationFinished, EquipDuration, false);
 		}
 		else
@@ -132,7 +131,7 @@ void UCharacterEquipmentComponent::BeginPlay()
 	Super::BeginPlay();
 	checkf(GetOwner()->IsA<ADRBaseCharacter>(), TEXT(" UCharacterEquipmentComponent::BeginPlay() can be used only with AGCBaseCharacter"));
 	CachedBaseCharacter = StaticCast<ADRBaseCharacter*>(GetOwner());
-	FPMesh = Cast<APlayerCharacter>(CachedBaseCharacter)->GetFirstPersonMesh();
+	FPMesh = CachedBaseCharacter->GetFirstPersonMesh();
 	CreateLoadout();
 }
 

@@ -9,6 +9,7 @@
 #include "NiagaraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/DecalComponent.h"
+#include "Engine/DamageEvents.h"
 
 
 void UWeaponBarrelComponent::Shot(FVector ShotStart, FVector ShotDirection, AController* Controller)
@@ -25,7 +26,9 @@ void UWeaponBarrelComponent::Shot(FVector ShotStart, FVector ShotDirection, ACon
 		AActor* HitActor = ShotResult.GetActor();
 		if (IsValid(HitActor))
 		{
-			HitActor->TakeDamage(DamageAmount, FDamageEvent{}, Controller, GetOwner());
+			//HitActor->TakeDamage(DamageAmount, FDamageEvent{}, Controller, GetOwner());
+			FPointDamageEvent PointDamageEvent = FPointDamageEvent(DamageAmount, ShotResult, ShotDirection, nullptr);
+			HitActor->TakeDamage(DamageAmount, PointDamageEvent, Controller, GetOwner());
 		}
 
 		//DrawDebugSphere(GetWorld(), ShotEnd, 10.0f, 24, FColor::Red, false, 1.0f);

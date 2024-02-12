@@ -16,6 +16,8 @@ ADRBaseCharacter::ADRBaseCharacter()
 {
 	CharacterAttributesComponent = CreateDefaultSubobject<UCharacterAttributesComponent>(TEXT("Character Attributes"));
 	CharacterEquipmentComponent = CreateDefaultSubobject<UCharacterEquipmentComponent>(TEXT("Character Equipment"));
+	FPMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("First Person Mesh"));
+	FPMesh->SetupAttachment(RootComponent);
 	MaxMovementSpeed = GetCharacterMovement()->MaxWalkSpeed;
 }
 
@@ -126,6 +128,45 @@ void ADRBaseCharacter::Menu()
 float ADRBaseCharacter::GetCurrentMovementSpeed() const
 {
 	return CurrentAimingMovementSpeed;
+}
+
+USkeletalMeshComponent* ADRBaseCharacter::GetFirstPersonMesh() const
+{
+	return FPMesh;
+}
+
+float ADRBaseCharacter::PlayFPAnimMontage(class UAnimMontage* AnimMontage, float InPlayRate, FName StartSectionName)
+{
+	UAnimInstance* AnimInstance = (IsValid(FPMesh)) ? FPMesh->GetAnimInstance() : nullptr;
+	if (AnimMontage && AnimInstance)
+	{
+		float const Duration = AnimInstance->Montage_Play(AnimMontage, InPlayRate);
+
+		if (Duration > 0.f)
+		{
+			// Start at a given Section.
+			if (StartSectionName != NAME_None)
+			{
+				AnimInstance->Montage_JumpToSection(StartSectionName, AnimMontage);
+			}
+
+			return Duration;
+		}
+	}
+
+	return 0.f;
+}
+
+void ADRBaseCharacter::StopFPAnimMontage(class UAnimMontage* AnimMontage)
+{
+	UAnimInstance* AnimInstance = (IsValid(FPMesh)) ? FPMesh->GetAnimInstance() : nullptr;
+	UAnimMontage* MontageToStop = (AnimMontage) ? AnimMontage : GetCurrentMontage();
+	bool bShouldStopMontage = AnimInstance && MontageToStop && !AnimInstance->Montage_GetIsStopped(MontageToStop);
+
+	if (bShouldStopMontage)
+	{
+		AnimInstance->Montage_Stop(MontageToStop->BlendOut.GetBlendTime(), MontageToStop);
+	}
 }
 
 void ADRBaseCharacter::Falling()

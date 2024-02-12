@@ -7,7 +7,6 @@
 #include "Components/Weapon/WeaponBarrelComponent.h"
 #include "Characters/DRBaseCharacter.h"
 #include "DarkRageTypes.h"
-#include "Characters/PlayerCharacter.h"
 
 ARangeWeaponItem::ARangeWeaponItem()
 {
@@ -49,8 +48,8 @@ void ARangeWeaponItem::StopAim()
 
 void ARangeWeaponItem::StartReload()
 {
-	checkf(GetOwner()->IsA<APlayerCharacter>(), TEXT("ARangeWeaponItem::StartReload() only APlayerCharacter can be an owner of a ARangeWeaponItem"))
-	APlayerCharacter* CharacterOwner = StaticCast<APlayerCharacter*>(GetOwner());
+	checkf(GetOwner()->IsA<ADRBaseCharacter>(), TEXT("ARangeWeaponItem::StartReload() only ADRBaseCharacter can be an owner of a ARangeWeaponItem"))
+	ADRBaseCharacter* CharacterOwner = StaticCast<ADRBaseCharacter*>(GetOwner());
 
 	bIsReloading = true;
 	if (IsValid(CharacterReloadMontage))
@@ -75,8 +74,8 @@ void ARangeWeaponItem::EndReload(bool bIsSuccess)
 
 	if (!bIsSuccess)
 	{
-		checkf(GetOwner()->IsA<APlayerCharacter>(), TEXT("ARangeWeaponItem::StartReload() only APlayerCharacter can be an owner of a ARangeWeaponItem"))
-		APlayerCharacter* CharacterOwner = StaticCast<APlayerCharacter*>(GetOwner());
+		checkf(GetOwner()->IsA<ADRBaseCharacter>(), TEXT("ARangeWeaponItem::StartReload() only ADRBaseCharacter can be an owner of a ARangeWeaponItem"))
+		ADRBaseCharacter* CharacterOwner = StaticCast<ADRBaseCharacter*>(GetOwner());
 		CharacterOwner->StopFPAnimMontage(CharacterReloadMontage);
 		StopAnimMontage(WeaponReloadMontage);
 	}
@@ -137,8 +136,8 @@ void ARangeWeaponItem::BeginPlay()
 
 void ARangeWeaponItem::MakeShot()
 {
-	checkf(GetOwner()->IsA<APlayerCharacter>(), TEXT("ARangeWeaponItem::MakeShot() only APlayerCharacter can be an owner of a ARangeWeaponItem"))
-	APlayerCharacter* CharacterOwner = StaticCast<APlayerCharacter*>(GetOwner());
+	checkf(GetOwner()->IsA<ADRBaseCharacter>(), TEXT("ARangeWeaponItem::MakeShot() only ADRBaseCharacter can be an owner of a ARangeWeaponItem"))
+	ADRBaseCharacter* CharacterOwner = StaticCast<ADRBaseCharacter*>(GetOwner());
 
 	if (!CanShoot())
 	{

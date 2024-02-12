@@ -46,6 +46,12 @@ public:
 
 	float GetCurrentMovementSpeed() const;
 
+	USkeletalMeshComponent* GetFirstPersonMesh() const;
+
+	float PlayFPAnimMontage(class UAnimMontage* AnimMontage, float InPlayRate = 1.0f, FName StartSectionName = NAME_None);
+
+	void StopFPAnimMontage(class UAnimMontage* AnimMontage);
+
 	virtual void Falling() override;
 
 	virtual void NotifyJumpApex() override;
@@ -66,16 +72,19 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Components")
 	UCharacterAttributesComponent* CharacterAttributesComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Components")
+	UCharacterEquipmentComponent* CharacterEquipmentComponent;
+
 	virtual void OnDeath();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Camera")
+	class USkeletalMeshComponent* FPMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character| Animations")
 	class UAnimMontage* OnDeathAnimMontage;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character | Attributes")
 	class UCurveFloat* FallDamageCurve;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Components")
-	UCharacterEquipmentComponent* CharacterEquipmentComponent;
 
 	virtual void OnStartAimingInternal();
 

@@ -6,6 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DarkRageTypes.h"
+#include "Actors/Equipment/Weapons/RangeWeaponItem.h"
+#include "Components/CharacterComponents/CharacterEquipmentComponent.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -72,5 +74,39 @@ void APlayerCharacter::StopFPAnimMontage(class UAnimMontage* AnimMontage)
 		{
 			AnimInstance->Montage_Stop(MontageToStop->BlendOut.GetBlendTime(), MontageToStop);
 		}
+	}
+}
+
+void APlayerCharacter::OnStartAimingInternal()
+{
+	Super::OnStartAimingInternal();
+	APlayerController* PlayerController = GetController<APlayerController>();
+	if (!IsValid(PlayerController))
+	{
+		return;
+	}
+
+	APlayerCameraManager* CameraManager = PlayerController->PlayerCameraManager;
+	if (IsValid(CameraManager))
+	{
+		ARangeWeaponItem* CurrentRangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
+		CameraManager->SetFOV(CurrentRangeWeapon->GetAimFOV());
+	}
+}
+
+void APlayerCharacter::OnStopAimingInternal()
+{
+	Super::OnStopAimingInternal();
+	APlayerController* PlayerController = GetController<APlayerController>();
+	if (!IsValid(PlayerController))
+	{
+		return;
+	}
+
+	APlayerCameraManager* CameraManager = PlayerController->PlayerCameraManager;
+	if (IsValid(CameraManager))
+	{
+		ARangeWeaponItem* CurrentRangeWeapon = GetCharacterEquipmentComponent()->GetCurrentRangeWeapon();
+		CameraManager->UnlockFOV();
 	}
 }

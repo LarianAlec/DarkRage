@@ -57,7 +57,7 @@ void UCharacterEquipmentComponent::EquipItemInSlot(EEquipmentSlots Slot)
 		if (IsValid(EquipMontage))
 		{
 			bIsEquipping = true;
-			float EquipDuration = CachedBaseCharacter->PlayAnimMontage(EquipMontage);
+			float EquipDuration = Cast<APlayerCharacter>(CachedBaseCharacter)->PlayFPAnimMontage(EquipMontage);
 			GetWorld()->GetTimerManager().SetTimer(EquipTimer, this, &UCharacterEquipmentComponent::EquipAnimationFinished, EquipDuration, false);
 		}
 		else

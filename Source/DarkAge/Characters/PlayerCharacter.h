@@ -37,4 +37,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character | Camera")
 	class UCameraComponent* CameraComponent;
 
+	virtual void OnStartAimingInternal() override;
+
+	virtual void OnStopAimingInternal() override;
+
 };

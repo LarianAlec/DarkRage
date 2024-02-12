@@ -84,11 +84,14 @@ protected:
 	float RateOfFire = 600.0f;
 
 	// Bullet spread half angle in degrees
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters", meta = (ClampMin = 0.0f, UIMin = 0.0f, ClampMax = 2.0f, UIMax = 2.0f))
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters", meta = (ClampMin = 0.0f, UIMin = 0.0f, ClampMax = 5.0f, UIMax = 5.0f))
 	float SpreadAngle = 2.0f;
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters | Aiming", meta = (ClampMin = 0.0f, UIMin = 0.0f, ClampMax = 2.0f, UIMax = 2.0f))
 	float AimSpreadAngle = 0.25;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters", meta = (ClampMin = 0, UIMin = 0, ClampMax = 10, UIMax = 10))
+	int HeadShotMultiplayer = 5;
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters | Aiming", meta = (ClampMin = 0.0f, UIMin = 0.0f, ClampMax = 250.0f, UIMax = 250.0f))
 	float AimMovementMaxSpeed = 200.0f;

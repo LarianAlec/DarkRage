@@ -17,6 +17,7 @@ enum class EWeaponFireMode : uint8
 };
 
 class UAnimMontage;
+class UWeaponBarrelComponent;
 UCLASS(Blueprintable)
 class DARKAGE_API ARangeWeaponItem : public AEquipableItem
 {
@@ -51,6 +52,10 @@ public:
 
 	float GetAimMovementMaxSpeed() const;
 
+	UWeaponBarrelComponent* GetWeaponBarrelComponent_Mutable();
+
+	float GetCurrentBulletSpreadAngle() const;
+
 	FOnAmmoChanged OnAmmoChanged;
 
 	FOnReloadCompleted OnReloadComplete;
@@ -62,7 +67,7 @@ protected:
 	class USkeletalMeshComponent* WeaponMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	class UWeaponBarrelComponent* WeaponBarrel;
+	UWeaponBarrelComponent* WeaponBarrel;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animations | Weapon")
 	UAnimMontage* WeaponFireMontage;
@@ -119,8 +124,6 @@ private:
 	void OnShotTimerElapsed();
 
 	float GetShotTimerInterval() const;
-
-	float GetCurrentBulletSpreadAngle() const;
 
 	float PlayAnimMontage(UAnimMontage* AnimMontage);
 

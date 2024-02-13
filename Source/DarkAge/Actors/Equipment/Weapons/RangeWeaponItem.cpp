@@ -129,6 +129,11 @@ float ARangeWeaponItem::GetAimMovementMaxSpeed() const
 	return AimMovementMaxSpeed;
 }
 
+UWeaponBarrelComponent* ARangeWeaponItem::GetWeaponBarrelComponent_Mutable()
+{
+	return WeaponBarrel;
+}
+
 void ARangeWeaponItem::BeginPlay()
 {
 	Super::BeginPlay();
@@ -138,7 +143,7 @@ void ARangeWeaponItem::BeginPlay()
 void ARangeWeaponItem::MakeShot()
 {
 	checkf(GetOwner()->IsA<ADRBaseCharacter>(), TEXT("ARangeWeaponItem::MakeShot() only ADRBaseCharacter can be an owner of a ARangeWeaponItem"))
-		ADRBaseCharacter* CharacterOwner = StaticCast<ADRBaseCharacter*>(GetOwner());
+	ADRBaseCharacter* CharacterOwner = StaticCast<ADRBaseCharacter*>(GetOwner());
 
 	if (!CanShoot())
 	{
@@ -168,6 +173,13 @@ void ARangeWeaponItem::MakeShot()
 	FVector ViewDirection = PlayerViewRotation.RotateVector(FVector::ForwardVector);
 
 	SetAmmo(Ammo - 1);
+
+	if (AmmoType == EAmunitionType::Arrows)
+	{
+		GetWorld()->GetTimerManager().SetTimer(ShotTimer, this, &ARangeWeaponItem::OnShotTimerElapsed, GetShotTimerInterval(), false);
+		return;
+	}
+
 	WeaponBarrel->Shot(PlayerViewPoint, ViewDirection, Controller, GetCurrentBulletSpreadAngle());
 
 	GetWorld()->GetTimerManager().SetTimer(ShotTimer, this, &ARangeWeaponItem::OnShotTimerElapsed, GetShotTimerInterval(), false);
@@ -183,14 +195,14 @@ void ARangeWeaponItem::OnShotTimerElapsed()
 	switch (WeaponFireMode)
 	{
 	case EWeaponFireMode::Single:
-	{
-		StopFire();
-		break;
-	}
-	case EWeaponFireMode::FullAuto:
-	{
-		MakeShot();
-	}
+		{
+			StopFire();
+			break;
+		}
+		case EWeaponFireMode::FullAuto:
+		{
+			MakeShot();
+		}
 	}
 }
 

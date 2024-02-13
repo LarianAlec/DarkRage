@@ -31,7 +31,11 @@ void UWeaponBarrelComponent::Shot(FVector ShotStart, FVector ShotDirection, ACon
 			if (IsValid(HitActor))
 			{
 				//HitActor->TakeDamage(DamageAmount, FDamageEvent{}, Controller, GetOwner());
-				FPointDamageEvent PointDamageEvent = FPointDamageEvent(DamageAmount, ShotResult, ShotDirection, nullptr);
+				//FPointDamageEvent PointDamageEvent = FPointDamageEvent(DamageAmount, ShotResult, ShotDirection, nullptr);
+				FPointDamageEvent PointDamageEvent;
+				PointDamageEvent.HitInfo = ShotResult;
+				PointDamageEvent.ShotDirection = ShotDirection;
+				PointDamageEvent.DamageTypeClass = DamageTypeClass;
 				HitActor->TakeDamage(DamageAmount, PointDamageEvent, Controller, GetOwner());
 			}
 

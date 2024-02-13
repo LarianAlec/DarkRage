@@ -26,11 +26,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Health", meta = (UIMin = 0.0f))
 	float MaxHealth = 100.0f;
 
-private:
-	float Health = 0.0f;
-
 	UFUNCTION()
 	void OnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
+private:
+	float Health = 0.0f;
 
 	TWeakObjectPtr<class ADRBaseCharacter> CachedBaseCharacterOwner;
 };

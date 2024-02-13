@@ -110,13 +110,17 @@ private:
 
 	bool bIsReloading = false;
 
+	bool bIsFiring = false;
+
 	bool bIsAiming = false;
 
 	void MakeShot();
 
-	float GetCurrentBulletSpreadAngle() const;
+	void OnShotTimerElapsed();
 
 	float GetShotTimerInterval() const;
+
+	float GetCurrentBulletSpreadAngle() const;
 
 	float PlayAnimMontage(UAnimMontage* AnimMontage);
 

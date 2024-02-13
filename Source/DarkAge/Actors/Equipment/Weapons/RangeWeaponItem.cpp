@@ -23,17 +23,18 @@ ARangeWeaponItem::ARangeWeaponItem()
 
 void ARangeWeaponItem::StartFire()
 {
-	MakeShot();
-	if (WeaponFireMode == EWeaponFireMode::FullAuto)
+	if (GetWorld()->GetTimerManager().IsTimerActive(ShotTimer))
 	{
-		GetWorld()->GetTimerManager().ClearTimer(ShotTimer);
-		GetWorld()->GetTimerManager().SetTimer(ShotTimer, this, &ARangeWeaponItem::MakeShot, GetShotTimerInterval(), true);
+		return;
 	}
+
+	bIsFiring = true;
+	MakeShot();
 }
 
 void ARangeWeaponItem::StopFire()
 {
-	GetWorld()->GetTimerManager().ClearTimer(ShotTimer);
+	bIsFiring = false;
 }
 
 void ARangeWeaponItem::StartAim()
@@ -49,7 +50,7 @@ void ARangeWeaponItem::StopAim()
 void ARangeWeaponItem::StartReload()
 {
 	checkf(GetOwner()->IsA<ADRBaseCharacter>(), TEXT("ARangeWeaponItem::StartReload() only ADRBaseCharacter can be an owner of a ARangeWeaponItem"))
-	ADRBaseCharacter* CharacterOwner = StaticCast<ADRBaseCharacter*>(GetOwner());
+		ADRBaseCharacter* CharacterOwner = StaticCast<ADRBaseCharacter*>(GetOwner());
 
 	bIsReloading = true;
 	if (IsValid(CharacterReloadMontage))
@@ -75,7 +76,7 @@ void ARangeWeaponItem::EndReload(bool bIsSuccess)
 	if (!bIsSuccess)
 	{
 		checkf(GetOwner()->IsA<ADRBaseCharacter>(), TEXT("ARangeWeaponItem::StartReload() only ADRBaseCharacter can be an owner of a ARangeWeaponItem"))
-		ADRBaseCharacter* CharacterOwner = StaticCast<ADRBaseCharacter*>(GetOwner());
+			ADRBaseCharacter* CharacterOwner = StaticCast<ADRBaseCharacter*>(GetOwner());
 		CharacterOwner->StopFPAnimMontage(CharacterReloadMontage);
 		StopAnimMontage(WeaponReloadMontage);
 	}
@@ -137,7 +138,7 @@ void ARangeWeaponItem::BeginPlay()
 void ARangeWeaponItem::MakeShot()
 {
 	checkf(GetOwner()->IsA<ADRBaseCharacter>(), TEXT("ARangeWeaponItem::MakeShot() only ADRBaseCharacter can be an owner of a ARangeWeaponItem"))
-	ADRBaseCharacter* CharacterOwner = StaticCast<ADRBaseCharacter*>(GetOwner());
+		ADRBaseCharacter* CharacterOwner = StaticCast<ADRBaseCharacter*>(GetOwner());
 
 	if (!CanShoot())
 	{
@@ -168,6 +169,29 @@ void ARangeWeaponItem::MakeShot()
 
 	SetAmmo(Ammo - 1);
 	WeaponBarrel->Shot(PlayerViewPoint, ViewDirection, Controller, GetCurrentBulletSpreadAngle());
+
+	GetWorld()->GetTimerManager().SetTimer(ShotTimer, this, &ARangeWeaponItem::OnShotTimerElapsed, GetShotTimerInterval(), false);
+}
+
+void ARangeWeaponItem::OnShotTimerElapsed()
+{
+	if (!bIsFiring)
+	{
+		return;
+	}
+
+	switch (WeaponFireMode)
+	{
+	case EWeaponFireMode::Single:
+	{
+		StopFire();
+		break;
+	}
+	case EWeaponFireMode::FullAuto:
+	{
+		MakeShot();
+	}
+	}
 }
 
 float ARangeWeaponItem::GetCurrentBulletSpreadAngle() const

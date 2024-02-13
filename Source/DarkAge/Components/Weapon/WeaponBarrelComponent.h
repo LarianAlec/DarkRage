@@ -34,11 +34,14 @@ class DARKAGE_API UWeaponBarrelComponent : public USceneComponent
 	GENERATED_BODY()
 
 public:	
-	void Shot(FVector ShotStart, FVector ShotDirection, AController* Controller);
+	void Shot(FVector ShotStart, FVector ShotDirection, AController* Controller, float SpreadAngle);
 		
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel attributes")
 	float FiringRange = 5000.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel attributes", meta = (ClampMin = 1, UIMin = 1))
+	int32 BulletsPerShot = 1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel attributes | Damage")
 	float DamageAmount = 20.0f;
@@ -51,5 +54,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barrel attributes | Decals")
 	FDecalInfo DefaultDecalInfo;
+
+private:
+	FVector GetBulletSpreadOffset(float Angle, FRotator ShotRotation);
 		
 };

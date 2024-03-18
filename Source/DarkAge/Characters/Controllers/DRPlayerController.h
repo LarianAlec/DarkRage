@@ -29,6 +29,8 @@ protected:
 
 	virtual void SetupInputComponent() override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
+	UPlayerHUDWidget* PlayerHUDWidget = nullptr;
 private:
 	void PlayerStartFire(const FInputActionValue& Value);
 
@@ -47,6 +49,4 @@ private:
 	TSoftObjectPtr<class ADRBaseCharacter> CachedBaseCharacter;
 
 	void CreateAndInitializeWidgets();
-
-	UPlayerHUDWidget* PlayerHUDWidget = nullptr;
 };

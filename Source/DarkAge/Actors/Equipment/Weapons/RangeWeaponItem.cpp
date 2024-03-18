@@ -212,6 +212,16 @@ float ARangeWeaponItem::GetCurrentBulletSpreadAngle() const
 	return FMath::DegreesToRadians(AngleInDegress);
 }
 
+UAnimMontage* ARangeWeaponItem::GetWeaponPunchMontage() const
+{
+	return WeaponPunchMontage;
+}
+
+UAnimMontage* ARangeWeaponItem::GetCharacterPunchMontage() const
+{
+	return CharacterPunchMontage;
+}
+
 float ARangeWeaponItem::GetShotTimerInterval() const
 {
 	return 60.0f / RateOfFire;
@@ -237,3 +247,5 @@ void ARangeWeaponItem::StopAnimMontage(UAnimMontage* AnimMontage, float BlendOut
 		WeaponAnimInstance->Montage_Stop(BlendOutTime, AnimMontage);
 	}
 }
+
+

@@ -24,7 +24,7 @@ void UCharacterAttributesComponent::BeginPlay()
 
 void UCharacterAttributesComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
-	if (!IsAlive())
+	/*if (!IsAlive())
 	{
 		return;
 	}
@@ -39,5 +39,5 @@ void UCharacterAttributesComponent::OnTakeAnyDamage(AActor* DamagedActor, float 
 		{
 			OnDeathEvent.Broadcast();
 		}
-	}
+	}*/
 }

@@ -14,7 +14,7 @@ typedef TArray<int32, TInlineAllocator<(uint32)EAmunitionType::MAX>> TAmunitionA
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnCurrentWeaponAmmoChanged, int32, int32)
 
 class ARangeWeaponItem;
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), BlueprintType)
 class DARKAGE_API UCharacterEquipmentComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -23,6 +23,12 @@ public:
 	EEquipableItemType GetCurrentEquippedItemType() const;
 
 	ARangeWeaponItem* GetCurrentRangeWeapon() const;
+
+	UFUNCTION(BlueprintPure)
+	UAnimMontage* GetCurrentWeaponPunchAnimMontage() const;
+
+	UFUNCTION(BlueprintPure)
+	UAnimMontage* GetCharacterPunchAnimMontageForCurrentWeapon() const;
 
 	bool IsEquipping() const;
 

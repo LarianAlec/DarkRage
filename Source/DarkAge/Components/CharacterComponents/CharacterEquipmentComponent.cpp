@@ -22,6 +22,20 @@ ARangeWeaponItem* UCharacterEquipmentComponent::GetCurrentRangeWeapon() const
 	return CurrentEquippedWeapon;
 }
 
+UAnimMontage* UCharacterEquipmentComponent::GetCurrentWeaponPunchAnimMontage() const
+{
+	return CurrentEquippedWeapon->GetWeaponPunchMontage();
+}
+
+UAnimMontage* UCharacterEquipmentComponent::GetCharacterPunchAnimMontageForCurrentWeapon() const
+{
+	if (!IsValid(CurrentEquippedWeapon))
+	{
+		return nullptr;
+	}
+	return CurrentEquippedWeapon->GetCharacterPunchMontage();
+}
+
 bool UCharacterEquipmentComponent::IsEquipping() const
 {
 	return bIsEquipping;

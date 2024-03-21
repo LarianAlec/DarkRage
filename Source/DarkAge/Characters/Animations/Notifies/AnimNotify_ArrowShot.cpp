@@ -12,6 +12,11 @@ void UAnimNotify_ArrowShot::Notify(USkeletalMeshComponent* MeshComp, UAnimSequen
 	Super::Notify(MeshComp, Animation);
 
 	ARangeWeaponItem* RangeWeapon = Cast<ARangeWeaponItem>(MeshComp->GetOwner());
+	if(!IsValid(RangeWeapon))
+	{
+		return;
+	}
+
 	ADRBaseCharacter* CachedBaseCharacter = Cast<ADRBaseCharacter>(RangeWeapon->GetOwner());
 	if (!IsValid(CachedBaseCharacter))
 	{

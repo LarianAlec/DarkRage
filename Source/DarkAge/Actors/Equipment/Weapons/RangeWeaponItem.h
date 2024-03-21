@@ -56,6 +56,10 @@ public:
 
 	float GetCurrentBulletSpreadAngle() const;
 
+	UAnimMontage* GetWeaponPunchMontage() const;
+
+	UAnimMontage* GetCharacterPunchMontage() const;
+
 	FOnAmmoChanged OnAmmoChanged;
 
 	FOnReloadCompleted OnReloadComplete;
@@ -75,11 +79,17 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animations | Weapon")
 	UAnimMontage* WeaponReloadMontage;
 
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Animations | Character")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animations | Weapon")
+	UAnimMontage* WeaponPunchMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animations | Character")
 	UAnimMontage* CharacterFireMontage;
 
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Animations | Character")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animations | Character")
 	UAnimMontage* CharacterReloadMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animations | Character")
+	UAnimMontage* CharacterPunchMontage;
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, Category = "Weapon | Parameters")
 	EWeaponFireMode WeaponFireMode = EWeaponFireMode::Single;

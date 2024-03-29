@@ -24,7 +24,21 @@ ARangeWeaponItem* UCharacterEquipmentComponent::GetCurrentRangeWeapon() const
 
 UAnimMontage* UCharacterEquipmentComponent::GetCurrentWeaponPunchAnimMontage() const
 {
+	if (!IsValid(CurrentEquippedWeapon))
+	{
+		return nullptr;
+	}
+
 	return CurrentEquippedWeapon->GetWeaponPunchMontage();
+}
+
+USkeletalMeshComponent* UCharacterEquipmentComponent::GetCurrentWeaponMesh() const
+{
+	if (!IsValid(CurrentEquippedWeapon))
+	{
+		return nullptr;
+	}
+	return CurrentEquippedWeapon->GetSkeletalMesh();
 }
 
 UAnimMontage* UCharacterEquipmentComponent::GetCharacterPunchAnimMontageForCurrentWeapon() const
@@ -34,6 +48,22 @@ UAnimMontage* UCharacterEquipmentComponent::GetCharacterPunchAnimMontageForCurre
 		return nullptr;
 	}
 	return CurrentEquippedWeapon->GetCharacterPunchMontage();
+}
+
+TArray<AActor*> UCharacterEquipmentComponent::GetAllAvaliableWeapons()
+{
+	TArray<AActor*> result;
+
+	for (AEquipableItem* Item : ItemsArray)
+	{
+		if (!IsValid(Item))
+		{
+			continue;
+		}
+		result.Add(Item);
+	}
+
+	return result;
 }
 
 bool UCharacterEquipmentComponent::IsEquipping() const

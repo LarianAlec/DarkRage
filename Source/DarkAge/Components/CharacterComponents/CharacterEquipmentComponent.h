@@ -28,7 +28,13 @@ public:
 	UAnimMontage* GetCurrentWeaponPunchAnimMontage() const;
 
 	UFUNCTION(BlueprintPure)
+	USkeletalMeshComponent* GetCurrentWeaponMesh() const;
+
+	UFUNCTION(BlueprintPure)
 	UAnimMontage* GetCharacterPunchAnimMontageForCurrentWeapon() const;
+
+	UFUNCTION(BlueprintCallable)
+	TArray<AActor*> GetAllAvaliableWeapons();
 
 	bool IsEquipping() const;
 

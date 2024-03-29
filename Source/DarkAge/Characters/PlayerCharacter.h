@@ -14,6 +14,7 @@ class DARKAGE_API APlayerCharacter : public ADRBaseCharacter
 	
 public:
 	APlayerCharacter();
+
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character")

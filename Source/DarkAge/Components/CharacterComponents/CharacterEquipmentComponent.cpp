@@ -36,6 +36,22 @@ UAnimMontage* UCharacterEquipmentComponent::GetCharacterPunchAnimMontageForCurre
 	return CurrentEquippedWeapon->GetCharacterPunchMontage();
 }
 
+TArray<AActor*> UCharacterEquipmentComponent::GetAllAvaliableWeapons()
+{
+	TArray<AActor*> result;
+
+	for (AEquipableItem* Item : ItemsArray)
+	{
+		if (!IsValid(Item))
+		{
+			continue;
+		}
+		result.Add(Item);
+	}
+
+	return result;
+}
+
 bool UCharacterEquipmentComponent::IsEquipping() const
 {
 	return bIsEquipping;

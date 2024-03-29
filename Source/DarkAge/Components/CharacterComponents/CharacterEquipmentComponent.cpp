@@ -24,7 +24,21 @@ ARangeWeaponItem* UCharacterEquipmentComponent::GetCurrentRangeWeapon() const
 
 UAnimMontage* UCharacterEquipmentComponent::GetCurrentWeaponPunchAnimMontage() const
 {
+	if (!IsValid(CurrentEquippedWeapon))
+	{
+		return nullptr;
+	}
+
 	return CurrentEquippedWeapon->GetWeaponPunchMontage();
+}
+
+USkeletalMeshComponent* UCharacterEquipmentComponent::GetCurrentWeaponMesh() const
+{
+	if (!IsValid(CurrentEquippedWeapon))
+	{
+		return nullptr;
+	}
+	return CurrentEquippedWeapon->GetSkeletalMesh();
 }
 
 UAnimMontage* UCharacterEquipmentComponent::GetCharacterPunchAnimMontageForCurrentWeapon() const

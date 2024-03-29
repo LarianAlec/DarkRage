@@ -134,6 +134,11 @@ UWeaponBarrelComponent* ARangeWeaponItem::GetWeaponBarrelComponent_Mutable()
 	return WeaponBarrel;
 }
 
+USkeletalMeshComponent* ARangeWeaponItem::GetSkeletalMesh() const
+{
+	return WeaponMesh;
+}
+
 void ARangeWeaponItem::BeginPlay()
 {
 	Super::BeginPlay();

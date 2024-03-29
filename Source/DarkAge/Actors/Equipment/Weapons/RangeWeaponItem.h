@@ -64,6 +64,8 @@ public:
 
 	FOnReloadCompleted OnReloadComplete;
 
+	USkeletalMeshComponent* GetSkeletalMesh() const;
+
 protected:
 	virtual void BeginPlay() override;
 

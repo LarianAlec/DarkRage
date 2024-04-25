@@ -36,6 +36,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<AActor*> GetAllAvaliableWeapons();
 
+	UFUNCTION(BlueprintCallable)
+	void AddBullets(const EAmunitionType AmunitionType, int amount);
+
 	bool IsEquipping() const;
 
 	void ReloadCurrentWeapon();

@@ -66,6 +66,15 @@ TArray<AActor*> UCharacterEquipmentComponent::GetAllAvaliableWeapons()
 	return result;
 }
 
+void UCharacterEquipmentComponent::AddBullets(const EAmunitionType AmunitionType, int amount)
+{
+	AmunitionArray[(uint8)AmunitionType] += FMath::Max(amount, 0);
+	if (IsValid(CurrentEquippedWeapon))
+	{
+		OnCurrentWeaponAmmoChanged(CurrentEquippedWeapon->GetAmmo());
+	}
+}
+
 bool UCharacterEquipmentComponent::IsEquipping() const
 {
 	return bIsEquipping;

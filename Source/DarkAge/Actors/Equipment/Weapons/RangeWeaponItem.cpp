@@ -49,14 +49,19 @@ void ARangeWeaponItem::StopAim()
 
 void ARangeWeaponItem::StartReload()
 {
+	if (bIsReloading)
+	{
+		return;
+	}
+
 	checkf(GetOwner()->IsA<ADRBaseCharacter>(), TEXT("ARangeWeaponItem::StartReload() only ADRBaseCharacter can be an owner of a ARangeWeaponItem"))
 		ADRBaseCharacter* CharacterOwner = StaticCast<ADRBaseCharacter*>(GetOwner());
 
 	bIsReloading = true;
 	if (IsValid(CharacterReloadMontage))
 	{
-		float MontageDuration = CharacterOwner->PlayFPAnimMontage(CharacterReloadMontage);
-		CharacterOwner->PlayAnimMontage(CharacterReloadMontage);
+		float MontageDuration = CharacterOwner->PlayFPAnimMontage(CharacterReloadMontage, ReloadAnimationPlayRate) / ReloadAnimationPlayRate;
+		CharacterOwner->PlayAnimMontage(CharacterReloadMontage, ReloadAnimationPlayRate);
 		PlayAnimMontage(WeaponReloadMontage);
 		GetWorld()->GetTimerManager().SetTimer(ReloadTimer, [this]() { EndReload(true); }, MontageDuration, false);
 	}
@@ -238,7 +243,7 @@ float ARangeWeaponItem::PlayAnimMontage(UAnimMontage* AnimMontage)
 	float Result = 0.0f;
 	if (IsValid(WeaponAnimInstance))
 	{
-		Result = WeaponAnimInstance->Montage_Play(AnimMontage);
+		Result = WeaponAnimInstance->Montage_Play(AnimMontage, ReloadAnimationPlayRate);
 	}
 	return Result;
 }

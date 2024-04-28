@@ -122,6 +122,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon | Parameters | Ammo")
 	bool bAutoReload = true;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon | Parameters | Ammo", meta = (ClampMin = 0.7f, UIMin = 2.0f))
+	float ReloadAnimationPlayRate = 1.0f;
+
 private:
 	int32 Ammo = 0;
 

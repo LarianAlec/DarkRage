@@ -63,7 +63,7 @@ void ARangeWeaponItem::StartReload()
 		float MontageDuration = CharacterOwner->PlayFPAnimMontage(CharacterReloadMontage, ReloadAnimationPlayRate) / ReloadAnimationPlayRate;
 		CharacterOwner->PlayAnimMontage(CharacterReloadMontage, ReloadAnimationPlayRate);
 		PlayAnimMontage(WeaponReloadMontage);
-		GetWorld()->GetTimerManager().SetTimer(ReloadTimer, [this]() { EndReload(true); }, MontageDuration, false);
+		GetWorld()->GetTimerManager().SetTimer(ReloadTimer, this, &ARangeWeaponItem::SuccessEndReload, MontageDuration, false);
 	}
 	else
 	{
@@ -86,6 +86,11 @@ void ARangeWeaponItem::EndReload(bool bIsSuccess)
 		StopAnimMontage(WeaponReloadMontage);
 	}
 
+	if (!IsValid(GetWorld()))
+	{
+		return;
+	}
+	
 	GetWorld()->GetTimerManager().ClearTimer(ReloadTimer);
 
 	bIsReloading = false;
@@ -93,6 +98,12 @@ void ARangeWeaponItem::EndReload(bool bIsSuccess)
 	{
 		OnReloadComplete.Broadcast();
 	}
+
+}
+
+void ARangeWeaponItem::SuccessEndReload()
+{
+	EndReload(true);
 }
 
 int32 ARangeWeaponItem::GetAmmo() const

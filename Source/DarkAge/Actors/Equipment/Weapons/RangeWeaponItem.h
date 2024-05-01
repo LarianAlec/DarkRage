@@ -38,6 +38,8 @@ public:
 
 	void EndReload(bool bIsSuccess);
 
+	void SuccessEndReload();
+
 	int32 GetAmmo() const;
 
 	int32 GetMaxAmmo() const;
